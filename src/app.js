@@ -12,19 +12,25 @@ app.get('/health', (req, res) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    region: process.env.VERCEL_REGION || 'local'
+    region: process.env.VERCEL_REGION || 'local',
+    pid: process.pid
   });
 });
 
 app.get('/', (req, res) => {
   res.status(200).json({
-    message: 'Vercel Scalable API',
+    message: 'Vercel Scalable API - Resource Testing',
     endpoints: [
       '/health',
       '/api/test-scale/hello',
-      '/api/test-scale/load-test'
+      '/api/test-scale/load-test',
+      '/api/test-scale/extreme-load'
     ],
-    region: process.env.VERCEL_REGION || 'local'
+    region: process.env.VERCEL_REGION || 'local',
+    instructions: {
+      scaling_test: 'Use /api/test-scale/extreme-load for heavy load testing',
+      parameters: 'Add ?iterations=NUMBER to control load intensity'
+    }
   });
 });
 
