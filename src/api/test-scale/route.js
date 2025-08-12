@@ -14,7 +14,12 @@ router.get('/hello', (req, res) => {
       heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)} MB`,
       heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)} MB`
     },
-    pid: process.pid
+    pid: process.pid,
+    requestId: Math.random().toString(36).substring(7),
+    headers: {
+      'x-vercel-id': req.headers['x-vercel-id'],
+      'x-forwarded-for': req.headers['x-forwarded-for']
+    }
   });
 });
 
@@ -35,7 +40,8 @@ router.get('/load-test', (req, res) => {
     timestamp: new Date().toISOString(),
     instanceInfo: {
       pid: process.pid,
-      region: process.env.VERCEL_REGION || 'local'
+      region: process.env.VERCEL_REGION || 'local',
+      requestId: Math.random().toString(36).substring(7)
     }
   });
 });
